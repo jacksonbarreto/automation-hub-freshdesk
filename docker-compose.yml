@@ -3,7 +3,9 @@ version: '3.8'
 services:
   api:
     container_name: api
-    image: fresh-desk:1.0.0
+    hostname: api
+    restart: always
+    image: fresh-desk:2.0.0
     environment:
       - FRESHDESK_API_KEY=${FRESHDESK_API_KEY}
       - FRESHDESK_API_URL=${FRESHDESK_API_URL}
@@ -12,25 +14,31 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    ports:
-      - 3000:3000
-    command: ['nx', 'serve', 'api']
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+    command: [ 'nx', 'serve', 'api' ]
+    networks:
+      - freshdesk-network
 
   web:
     container_name: web
-    image: fresh-desk:1.0.0
+    hostname: freshdesk
+    restart: always
+    depends_on:
+      - api
     environment:
       - NX_BASE_URL=${NX_BASE_URL}
-      # - NX_BASE_URL=http://212.227.30.194:3000
     build:
       context: .
-      dockerfile: ./Dockerfile
-    command: ['nx', 'serve', 'web', '--host', '0.0.0.0']
-    ports:
-      # - 80:4200
-      - 4200:4200
-    volumes:
-      - /usr/src/app/node_modules
+      dockerfile: ./DockerfileWeb
+      args:
+        - NX_BASE_URL=${NX_BASE_URL}
+    networks:
+      - service-hub
+      - freshdesk-network
+
+networks:
+  freshdesk-network:
+    name: freshdesk-network
+    driver: bridge
+  service-hub:
+    name: service-hub
+    external: true

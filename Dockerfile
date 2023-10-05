@@ -17,8 +17,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install nx -g
+RUN npm install nx -g --unsafe-perm
 
 RUN npm install
-
 COPY . .

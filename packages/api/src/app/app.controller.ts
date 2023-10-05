@@ -7,7 +7,7 @@ export class AppController {
 
   constructor(private readonly appService: AppService) { }
 
-  @Post('start')
+  @Post('api-freshdesk/start')
   public start(@Body() { password }: { password: string }, @Res() res: Response): void {
 
     if (password && password === process.env.PASSWORD) {
@@ -22,34 +22,34 @@ export class AppController {
   }
 
 
-  @Get('works')
+  @Get('api-freshdesk/works')
   public works(): string {
     return 'server is up!'
   }
 
-  @Get('background-job')
+  @Get('api-freshdesk/background-job')
   public getBackgroundJobState(): { state: boolean } {
     return {
       state: this.appService.BACKGROUND_JOB
     };
   }
 
-  @Get('filtered-words')
+  @Get('api-freshdesk/filtered-words')
   public wordsList(): string[] {
     return this.appService.wordsList();
   }
 
-  @Post('background-job')
+  @Post('api-freshdesk/background-job')
   public setBackgroundJobState(@Body() { state }: { state: boolean }): void {
     this.appService.BACKGROUND_JOB = state;
   }
 
-  @Post('remove-word')
+  @Post('api-freshdesk/remove-word')
   public deleteWordFromWordsList(@Body() { word }: { word: string }): void {
     this.appService.deleteWordFromList(word);
   }
 
-  @Post('add-word')
+  @Post('api-freshdesk/add-word')
   public addWordToWordsList(@Body() { word }: { word: string }): void {
     this.appService.addWordToFilteredWordsList(word);
   }
