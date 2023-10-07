@@ -7,7 +7,7 @@ export class AppController {
 
   constructor(private readonly appService: AppService) { }
 
-  @Post('api-freshdesk/start')
+  @Post('freshdesk/api-freshdesk/start')
   public start(@Body() { password }: { password: string }, @Res() res: Response): void {
 
     if (password && password === process.env.PASSWORD) {

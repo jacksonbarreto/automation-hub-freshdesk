@@ -19,8 +19,9 @@ services:
       - freshdesk-network
 
   web:
-    container_name: web
+    container_name: freshdesk
     hostname: freshdesk
+    image: fresh-desk-web:2.0.0
     restart: always
     depends_on:
       - api
@@ -31,6 +32,8 @@ services:
       dockerfile: ./DockerfileWeb
       args:
         - NX_BASE_URL=${NX_BASE_URL}
+    ports:
+      - "59090:80"
     networks:
       - service-hub
       - freshdesk-network
