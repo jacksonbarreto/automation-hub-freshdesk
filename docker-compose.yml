@@ -17,6 +17,8 @@ services:
     command: [ 'nx', 'serve', 'api' ]
     networks:
       - freshdesk-network
+    mem_limit: 250m
+    cpus: 0.2
 
   web:
     container_name: freshdesk
@@ -37,6 +39,8 @@ services:
     networks:
       - service-hub
       - freshdesk-network
+    mem_limit: 250m
+    cpus: 0.2
 
 networks:
   freshdesk-network:
